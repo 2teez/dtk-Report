@@ -43,9 +43,17 @@ for my $file (@$files) {
 sub read_file {
     ( my $file ) = shift;
 
+    my $content = {};
+		my $header;
+
     open my $fh, '<', "$file";
     while (<$fh>) {
-        print $_, $/;
+        if (/.?((outgo|incom)ing)/i) {
+            print $1, $/;
+						$header = $1;
+        } else {
+
+        }
     }
 
 }
