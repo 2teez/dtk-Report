@@ -1,0 +1,46 @@
+#!/bin/bash
+
+## search the folder datafiles
+## check for two files. If they exist
+## call either [dtk_report] perl or python file
+## exit with an error message
+
+help() {
+	echo "Usage: dtk [-l|-y]"
+}
+
+file_counter=0
+
+## search the folder datafiles
+## check if the folder is not empty
+CONTENT_FOLDER='datafiles'
+msg="$CONTENT_FOLDER must contain two csv files namely: 
+'ne_5_Incoming_Calls_through_Trunk_Groups' 
+'ne_5_Outgoing_Calls_through_Trunk_Groups'"
+
+if [ -d "$CONTENT_FOLDER" ]; then
+	if ! [ "$(ls -A $CONTENT_FOLDER)" ]; then
+		echo "$msg"
+		exit 1
+	fi
+fi
+while read -r file; do
+	if [[ "$file" =~ ^.?ne_.*\.csv$ ]]; then
+		file_counter=$((file_counter + 1))
+	fi
+done < <(ls "$CONTENT_FOLDER")
+
+if [ "$file_counter" -lt 2 ]; then
+	exit 1
+fi
+
+while getopts ":ly" opts; do
+	case "$opts" in
+	l)
+		echo "Using Perl"
+		perl dtk_report.pl
+		;;
+	y) echo "Using python" ;;
+	*) help ;;
+	esac
+done
