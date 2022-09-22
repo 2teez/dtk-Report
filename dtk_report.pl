@@ -34,36 +34,45 @@ else {
     exit 1 if $counter != 2;
 }
 
-for my $file (@$files) {
-    if ( $file eq '.' ) {
-        next;
-    }
-    read_file($file);
-}
+#for my $file (@$files) {
+#if ( $file eq '.' ) {
+#     next;
+#  }
+#  read_file($file);
+#print $file, $/;
+#}
+print Dumper( read_file($files) );
 
 sub read_file {
-    ( my $file ) = shift;
+    my $files = shift;
 
     my $content = {};
     my $header;
 
-    open my $fh, '<', "$file";
-    while (<$fh>) {
-        if (/.?((outgo|incom)ing)/i) {
-            print $1, $/;
-            $header = $1;
-        }
-        else {
-            my $data = [ split /,/ ];
-            my $day =
-              @{ [ split /\s+?/ => @$data[2] ] }[0];
-            $day =~s/"(.+)/$1/;
-						push @{$content->{$header}{$day}{@$data[0]}} => [@$data[4..9]]
-              #print join " | " => @$data[ 0, 2, 4 .. 9 ], $/;
+    for my $file (@$files) {
+        open my $fh, '<', "$file";
+        while (<$fh>) {
+            if (/.?((outgo|incom)ing)/i) {
+                print $1, $/;
+                $header = $1;
+            }
+            else {
+                my $data = [ split /,/ ];
 
+                ## modified the date
+                my $day =
+                  @{ [ split /\s+?/ => @$data[2] ] }[0];
+                $day =~ s/"(.+)/$1/;
+
+                ## modified name
+                ( my $name = @$data[0] ) =~ s/"(.*)\(.*$/$1/img;
+
+                ## get content for each hour
+                push @{ $content->{$header}{$day}{$name} } =>
+                  [ @$data[ 4 .. 9 ] ];
+            }
         }
+        close $fh;
     }
-		close $fh;
-		print Dumper($content)
-
+    return $content;
 }
