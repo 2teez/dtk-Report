@@ -4,6 +4,7 @@ use strict;
 use File::Find qw/find/;
 use autodie qw/open close/;
 use Cwd qw/abs_path/;
+use Data::Dumper;
 
 ## search to see if incoming and outgoing
 ## trunk group files exist
@@ -44,16 +45,25 @@ sub read_file {
     ( my $file ) = shift;
 
     my $content = {};
-		my $header;
+    my $header;
 
     open my $fh, '<', "$file";
     while (<$fh>) {
         if (/.?((outgo|incom)ing)/i) {
             print $1, $/;
-						$header = $1;
-        } else {
+            $header = $1;
+        }
+        else {
+            my $data = [ split /,/ ];
+            my $day =
+              @{ [ split /\s+?/ => @$data[2] ] }[0];
+            $day =~s/"(.+)/$1/;
+						push @{$content->{$header}{$day}{@$data[0]}} => [@$data[4..9]]
+              #print join " | " => @$data[ 0, 2, 4 .. 9 ], $/;
 
         }
     }
+		close $fh;
+		print Dumper($content)
 
 }
