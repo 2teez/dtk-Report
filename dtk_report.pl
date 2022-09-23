@@ -34,14 +34,7 @@ else {
     exit 1 if $counter != 2;
 }
 
-#for my $file (@$files) {
-#if ( $file eq '.' ) {
-#     next;
-#  }
-#  read_file($file);
-#print $file, $/;
-#}
-print Dumper( read_file($files) );
+collate( read_file($files) );
 
 sub read_file {
     my $files = shift;
@@ -49,11 +42,10 @@ sub read_file {
     my $content = {};
     my $header;
 
-    for my $file (@$files) {
+    for my $file ( @{$files} ) {
         open my $fh, '<', "$file";
         while (<$fh>) {
             if (/.?((outgo|incom)ing)/i) {
-                print $1, $/;
                 $header = $1;
             }
             else {
@@ -68,11 +60,36 @@ sub read_file {
                 ( my $name = @$data[0] ) =~ s/"(.*)\(.*$/$1/img;
 
                 ## get content for each hour
-                push @{ $content->{$header}{$day}{$name} } =>
+                push @{ $content->{$day}{$header}{$name} } =>
                   [ @$data[ 4 .. 9 ] ];
             }
         }
         close $fh;
     }
     return $content;
+}
+
+sub collate {
+    my $data = shift;
+    for my $day ( sort { $a cmp $b } keys %{$data} ) {
+        print $day, $/;
+        for my $key ( sort { $a cmp $b } keys %{ $data->{$day} } ) {
+            print $key, $/;
+            print title(), $/;
+            for my $name ( sort { $a cmp $b } keys %{ $data->{$day}{$key} } ) {
+                print $name, "\t",
+                  join( "\t" => @{ @{ $data->{$day}{$key}{$name} }[20] } ), $/;
+            }
+        }
+    }
+}
+
+sub title {
+    my $msg =
+"Incoming or bidirection trunk group|Number of Installed Circuits (PIECES)|";
+    $msg .=
+"Number of Available Circuits (PIECES)|Number of Blocked Circuits (PIECES)|";
+    $msg .=
+"Call Completion Rate (PERCENT)|Answer Rate (PERCENT)	Seizure Traffic (ERL";
+    return join( "\t" => @{ [ split /\|/ => $msg ] } );
 }
