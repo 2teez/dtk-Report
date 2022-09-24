@@ -2,4 +2,4 @@
 */__py_cache__
 */*/__py_cache__
 *.xls
-datafiles/ne_5_Incoming_Calls_through_Trunk_Groups_Y2022M09D23H18N15S12.csv datafiles/ne_5_Outgoing_Calls_through_Trunk_Groups_Y2022M09D23H18N17S33.csv
+*/*.csv
