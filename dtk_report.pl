@@ -67,6 +67,7 @@ sub read_file {
                 ( my $name = @$data[0] ) =~ s/"(.*)\(.*$/$1/img;
 
                 ## get content for each hour
+                # $ARGV[0] is the timer specified on the CLI
                 push @{ $content->{$day}{$header}{$name} } =>
                   [ @$data[ 4 .. 9 ] ]
                   if $data->[2] =~ /$ARGV[0]:00:00/;
@@ -78,18 +79,22 @@ sub read_file {
 }
 
 sub collate {
+	  # report file
+		my $filename = 'Trunk Report_';
+		open my $fh, '>', "./${filename}$$.xls";
     my $data = shift;
     for my $day ( sort { $a cmp $b } keys %{$data} ) {
-        print $day, $/;
+        print $fh $day, $/;
         for my $key ( sort { $a cmp $b } keys %{ $data->{$day} } ) {
-            print $key, $/;
-            print title(), $/;
+            print $fh $key, $/;
+            print $fh title(), $/;
             for my $name ( sort { $a cmp $b } keys %{ $data->{$day}{$key} } ) {
-                print $name, "\t",
+                print $fh $name, "\t",
                   join( "\t" => @{ @{ $data->{$day}{$key}{$name} }[0] } ), $/;
             }
         }
     }
+		close $fh;
 }
 
 sub title {
