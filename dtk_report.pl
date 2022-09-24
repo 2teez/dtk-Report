@@ -61,7 +61,7 @@ sub read_file {
 
                 ## get content for each hour
                 push @{ $content->{$day}{$header}{$name} } =>
-                  [ @$data[ 4 .. 9 ] ];
+                  [ @$data[ 4 .. 10 ] ];
             }
         }
         close $fh;
