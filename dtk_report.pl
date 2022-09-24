@@ -61,12 +61,14 @@ sub read_file {
 
                 ## get content for each hour
                 push @{ $content->{$day}{$header}{$name} } =>
-                  [ @$data[ 4 .. 10 ] ];
+                  [ @$data[ 4 .. 9 ] ]
+                  if $data->[2] =~ /20:00:00/;
             }
         }
         close $fh;
     }
-    return $content;
+		#print Dumper($content);
+		return $content;
 }
 
 sub collate {
@@ -78,7 +80,7 @@ sub collate {
             print title(), $/;
             for my $name ( sort { $a cmp $b } keys %{ $data->{$day}{$key} } ) {
                 print $name, "\t",
-                  join( "\t" => @{ @{ $data->{$day}{$key}{$name} }[20] } ), $/;
+                  join( "\t" => @{ @{ $data->{$day}{$key}{$name} }[0] } ), $/;
             }
         }
     }
