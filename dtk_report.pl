@@ -6,6 +6,13 @@ use autodie qw/open close/;
 use Cwd qw/abs_path/;
 use Data::Dumper;
 
+## verify the timer:
+## the time must be between 0 and 23
+if ( $ARGV[0] < 0 && $ARGV[0] > 23 ) {
+    print "Enter a valid report time between 0 & 23.";
+    exit 1;
+}
+
 ## search to see if incoming and outgoing
 ## trunk group files exist
 
@@ -62,13 +69,12 @@ sub read_file {
                 ## get content for each hour
                 push @{ $content->{$day}{$header}{$name} } =>
                   [ @$data[ 4 .. 9 ] ]
-                  if $data->[2] =~ /20:00:00/;
+                  if $data->[2] =~ /$ARGV[0]:00:00/;
             }
         }
         close $fh;
     }
-		#print Dumper($content);
-		return $content;
+    return $content;
 }
 
 sub collate {
