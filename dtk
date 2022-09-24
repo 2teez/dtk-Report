@@ -6,7 +6,7 @@
 ## exit with an error message
 
 help() {
-	echo "Usage: $0 [-l|-y]"
+	echo "Usage: $0 [-l] [timer] | -d | -y]"
 	exit 1
 }
 
@@ -39,12 +39,12 @@ if [ "$file_counter" -lt 2 ]; then
 	exit 1
 fi
 
-while getopts ":ly" opts; do
+while getopts ":l:yd" opts; do
 	case "$opts" in
 	l)
-		echo "Using Perl"
-		perl dtk_report.pl
+		perl dtk_report.pl "$OPTARG"
 		;;
+	d) perl dtk_report.pl 20 ;;
 	y) echo "Using python" ;;
 	*) help ;;
 	esac
