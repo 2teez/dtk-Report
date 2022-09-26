@@ -2,4 +2,10 @@
 */__py_cache__
 */*/__py_cache__
 *.xls
+<<<<<<< HEAD
+=======
+.*.xls#
+*.xlsx
+*/*.csv
+>>>>>>> main
 *.csv

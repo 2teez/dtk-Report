@@ -6,7 +6,7 @@
 ## exit with an error message
 
 help() {
-	echo "Usage: $0 [-l] [timer] | -d | -y]"
+	echo "Usage: $0 [-l] [timer] | -m <path to files> | -d | -y]"
 	exit 1
 }
 
@@ -19,7 +19,7 @@ file_counter=0
 ## search the folder datafiles
 ## check if the folder is not empty
 CONTENT_FOLDER='datafiles'
-msg="$CONTENT_FOLDER must contain two csv files namely:
+msg="$CONTENT_FOLDER directory must contain two csv files namely:
 'ne_5_Incoming_Calls_through_Trunk_Groups'
 'ne_5_Outgoing_Calls_through_Trunk_Groups'"
 
@@ -36,16 +36,38 @@ while read -r file; do
 done < <(ls "$CONTENT_FOLDER")
 
 if [ "$file_counter" -lt 2 ]; then
+	echo "$msg"
 	exit 1
 fi
 
-while getopts ":l:yd" opts; do
+while getopts ":l:ym:d" opts; do
 	case "$opts" in
 	l)
 		perl dtk_report.pl "$OPTARG"
 		;;
 	d) perl dtk_report.pl 20 ;;
 	y) echo "Using python" ;;
+	m)
+		while read -r -p "csv files would be deleted and new ones copied from $OPTARG [y|n]? " answer; do
+			case "$answer" in
+			y)
+				if [ -e "$OPTARG" ]; then
+					rm -rf datafiles/*.csv
+					cp "$OPTARG"*.csv "$CONTENT_FOLDER"
+					echo "files copied."
+				fi
+				break
+				;;
+			n)
+				break
+				;;
+			*)
+				echo "Enter y for yes or n for No!"
+				continue
+				;;
+			esac
+		done
+		;;
 	*) help ;;
 	esac
 done
