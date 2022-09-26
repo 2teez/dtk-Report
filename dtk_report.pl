@@ -4,7 +4,6 @@ use strict;
 use File::Find qw/find/;
 use autodie qw/open close/;
 use Cwd qw/abs_path/;
-use Data::Dumper;
 
 ## verify the timer:
 ## the time must be between 0 and 23
@@ -79,9 +78,10 @@ sub read_file {
 }
 
 sub collate {
-	  # report file
-		my $filename = 'Trunk Report_';
-		open my $fh, '>', "./${filename}$$.xls";
+
+    # report file
+    my $filename = 'Trunk Report_';
+    open my $fh, '>', "./${filename}$$.xls";
     my $data = shift;
     for my $day ( sort { $a cmp $b } keys %{$data} ) {
         print $fh $day, $/;
@@ -94,7 +94,7 @@ sub collate {
             }
         }
     }
-		close $fh;
+    close $fh;
 }
 
 sub title {
