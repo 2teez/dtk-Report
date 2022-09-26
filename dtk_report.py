@@ -3,8 +3,34 @@
 import os
 import sys
 
+__AUTHOR__ = 'emrys'
+__VERSION__ = 0.1
+
+
+def read_file(files: list[str]) -> None:
+    os.chdir('./datafiles')
+
+    for file in files:
+        with open(file) as fin:
+            for line in fin.readlines():
+                print(line)
+
+
+def search_locate(dir: str) -> tuple[int, list[str]]:
+    'search to find if csv files exist in the specified location.'
+    # check if the directory exist
+    if not os.path.exists(dir):
+        print(f'Path specified - {dir} doesn\'t exist.')
+        sys.exit(1)
+
+    files = \
+        list(file
+             for file in os.listdir(dir) if file.endswith('.csv'))
+    return (len(files), files)
+
 
 def main(lst: list[str]) -> None:
+    'Entry point for all function.'
     try:
         hour = int(lst[0])
         if (hour < 0 or hour > 23):
@@ -13,6 +39,15 @@ def main(lst: list[str]) -> None:
     except Exception as ex:
         print(f'Usage: {sys.argv[0]} [timer]')
         sys.exit(1)
+
+    number_file, list_file = search_locate('datafiles')
+    if (number_file) != 2:
+        file_names = \
+            f'/ne_5_Incoming_Calls_through_Trunk_Groups|ne_5_Outgoing_Calls_through_Trunk_Groups/'
+        print(file_names+' must in the directory `datafiles`')
+        sys.exit(1)
+    else:
+        read_file(list_file)
 
 
 if __name__ == '__main__':
