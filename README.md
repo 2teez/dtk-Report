@@ -4,7 +4,7 @@ Daily Trunk Report `dtk` enables the user to generates NSS Trunk reports by date
 
 This report needs two csv files namely:
 
-	1. `ne_5_Incoming_Calls_through_Trunk_Groups_.*.csv`
+	1. ne_5_Incoming_Calls_through_Trunk_Groups_.*.csv
 
 	2. `ne_5_Outgoing_Calls_through_Trunk_Groups_.*.csv`
 
