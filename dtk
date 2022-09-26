@@ -40,13 +40,16 @@ if [ "$file_counter" -lt 2 ]; then
 	exit 1
 fi
 
-while getopts ":l:ym:d" opts; do
+while getopts ":l:y:m:d" opts; do
 	case "$opts" in
 	l)
 		perl dtk_report.pl "$OPTARG"
 		;;
 	d) perl dtk_report.pl 20 ;;
-	y) echo "Using python" ;;
+	y)
+		echo "Using python"
+		python3 dtk_report.py "$OPTARG"
+		;;
 	m)
 		while read -r -p "csv files would be deleted and new ones copied from $OPTARG [y|n]? " answer; do
 			case "$answer" in
