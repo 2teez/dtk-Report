@@ -6,7 +6,7 @@ This report needs two csv files namely:
 
 	1. ne_5_Incoming_Calls_through_Trunk_Groups_.*.csv
 
-	2. `ne_5_Outgoing_Calls_through_Trunk_Groups_.*.csv`
+	2. ne_5_Outgoing_Calls_through_Trunk_Groups_.*.csv
 
 These files `must` be located in the directory named `datafiles`, which is also located in the
 dtk-Report directory.
