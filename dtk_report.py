@@ -9,11 +9,11 @@ __VERSION__ = 0.1
 
 def read_file(files: list[str]) -> None:
     os.chdir('./datafiles')
-
-    for file in files:
-        with open(file) as fin:
-            for line in fin.readlines():
-                print(line)
+    print('Implement container and parse each line')
+    # for file in files:
+    #     with open(file) as fin:
+    #         for line in fin.readlines():
+    #             print(line)
 
 
 def search_locate(dir: str) -> tuple[int, list[str]]:
