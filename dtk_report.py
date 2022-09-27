@@ -2,6 +2,7 @@
 
 import os
 import sys
+import unittest
 
 __AUTHOR__ = 'emrys'
 __VERSION__ = 0.1
@@ -19,7 +20,7 @@ class NElement:
     def __str__(self) -> str:
         return self.__repr__()
 
-    def _get_data(self, line) -> None:
+    def _get_data(self, line: str) -> None:
         self.hourly_content.append(line)
 
 
@@ -68,3 +69,11 @@ def main(lst: list[str]) -> None:
 
 if __name__ == '__main__':
     main(sys.argv[1:])
+
+
+class TestingClass(unittest.TestCase):
+    def test_repr_fn(self) -> None:
+        ne = NElement()
+        for num in list(range(0, 10, 2)):
+            ne._get_data(str(num))
+        self.assertEqual(ne.__repr__(), [1, 2, 3, 4, 5])
