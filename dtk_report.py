@@ -7,6 +7,22 @@ __AUTHOR__ = 'emrys'
 __VERSION__ = 0.1
 
 
+class NElement:
+    hourly_content: list[str] = []
+
+    def __init__(self, name: str) -> None:
+        self._name = name;
+
+    def __repr__(self) -> str:
+        return '|'.join(self.hourly_content)
+
+    def __str__(self) -> str:
+        return self.__repr__()
+
+    def _get_data(self, line) -> None:
+        self.hourly_content.append(line)
+
+
 def read_file(files: list[str]) -> None:
     os.chdir('./datafiles')
     print('TODO: Implement container and parse each line')
