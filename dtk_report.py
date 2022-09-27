@@ -25,12 +25,20 @@ class NElement:
 
 
 def read_file(files: list[str]) -> None:
+    import re
     os.chdir('./datafiles')
-    print('TODO: Implement container and parse each line')
-    # for file in files:
-    #     with open(file) as fin:
-    #         for line in fin.readlines():
-    #             print(line)
+    # print('TODO: Implement container and parse each line')
+    for file in files:
+        with open(file) as fin:
+            for line in fin.readlines():
+                for wrd in line.split(','):
+                    if (re.match(r'^("Incom|"Outgo)ing', wrd)):
+                        print(wrd.split(' ')[0].replace('"', ''))
+                    elif (re.search(r'\(\d+?\)', wrd, re.DOTALL)):
+                        wrd = re.search(r'"(.*)\(', wrd).groups(1)[0]
+                        print(wrd)
+                    # else:
+                    #     print(wrd)
 
 
 def search_locate(dir: str) -> tuple[int, list[str]]:
@@ -76,4 +84,4 @@ class TestingClass(unittest.TestCase):
         ne = NElement('')
         for num in list(range(0, 10, 2)):
             ne._get_data(str(num))
-        self.assertEqual(ne.__repr__(), '0|2|4|6|8')
+        self.assertEqual(ne.__repr__(), [1, 2, 3, 4, 5])
