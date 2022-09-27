@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
 class TestingClass(unittest.TestCase):
     def test_repr_fn(self) -> None:
-        ne = NElement()
+        ne = NElement('')
         for num in list(range(0, 10, 2)):
             ne._get_data(str(num))
-        self.assertEqual(ne.__repr__(), [1, 2, 3, 4, 5])
+        self.assertEqual(ne.__repr__(), '0|2|4|6|8')
