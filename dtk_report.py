@@ -11,7 +11,7 @@ class NElement:
     hourly_content: list[str] = []
 
     def __init__(self, name: str) -> None:
-        self._name = name;
+        self._name = name
 
     def __repr__(self) -> str:
         return '|'.join(self.hourly_content)
