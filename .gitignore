@@ -6,3 +6,4 @@
 *.xlsx
 */*.csv
 *.csv
+__pycache__
