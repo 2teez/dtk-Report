@@ -1,6 +1,7 @@
 .DS_Store
-*/__py_cache__
-*/*/__py_cache__
+__pycache__/
+*/__pycache__/
+*/*/__pycache__/
 *.xls
 .*.xls#
 *.xlsx
