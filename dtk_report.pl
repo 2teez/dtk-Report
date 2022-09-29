@@ -5,10 +5,15 @@ use File::Find qw/find/;
 use autodie qw/open close/;
 use Cwd qw/abs_path/;
 
+if (scalar(@ARGV) == 0) {
+  print "run ./dtk -d", $/;
+	exit 1;
+}
+
 ## verify the timer:
 ## the time must be between 0 and 23
-if ( $ARGV[0] < 0 && $ARGV[0] > 23 ) {
-    print "Enter a valid report time between 0 & 23.";
+if ( $ARGV[0] < 0 || $ARGV[0] > 23 ) {
+    print "Enter a valid report time between 0 & 23.\n";
     exit 1;
 }
 
